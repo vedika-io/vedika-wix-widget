@@ -1,0 +1,697 @@
+/**
+ * Vedika Widget Styles
+ * Light + Dark theme support via [data-theme] attribute.
+ * Responsive, works inside Wix HTML embed, Shopify, or any HTML page.
+ */
+
+/* =========================================================================
+   CSS CUSTOM PROPERTIES (light theme default)
+   ========================================================================= */
+
+.vedika-widget {
+  --vk-bg: #ffffff;
+  --vk-bg-secondary: #f8f9fa;
+  --vk-bg-accent: #fff8f0;
+  --vk-text: #1a1a2e;
+  --vk-text-secondary: #6c757d;
+  --vk-text-muted: #adb5bd;
+  --vk-border: #e9ecef;
+  --vk-primary: #e67e22;
+  --vk-primary-light: #fdebd0;
+  --vk-primary-dark: #d35400;
+  --vk-accent: #8e44ad;
+  --vk-accent-light: #f5eef8;
+  --vk-success: #27ae60;
+  --vk-warning: #f39c12;
+  --vk-danger: #e74c3c;
+  --vk-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --vk-shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --vk-radius: 12px;
+  --vk-radius-sm: 8px;
+  --vk-font: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  --vk-transition: 0.2s ease;
+}
+
+/* =========================================================================
+   DARK THEME
+   ========================================================================= */
+
+.vedika-widget[data-theme="dark"] {
+  --vk-bg: #1a1a2e;
+  --vk-bg-secondary: #16213e;
+  --vk-bg-accent: #1f2a40;
+  --vk-text: #e8e8e8;
+  --vk-text-secondary: #b0b0b0;
+  --vk-text-muted: #6c757d;
+  --vk-border: #2d3748;
+  --vk-primary: #f0a040;
+  --vk-primary-light: #3d2e1a;
+  --vk-primary-dark: #e67e22;
+  --vk-accent: #bb86fc;
+  --vk-accent-light: #2d1f42;
+  --vk-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  --vk-shadow-hover: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* =========================================================================
+   BASE LAYOUT
+   ========================================================================= */
+
+.vedika-widget {
+  font-family: var(--vk-font);
+  color: var(--vk-text);
+  background: var(--vk-bg);
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius);
+  box-shadow: var(--vk-shadow);
+  padding: 24px;
+  max-width: 480px;
+  width: 100%;
+  box-sizing: border-box;
+  line-height: 1.6;
+  transition: box-shadow var(--vk-transition);
+}
+
+.vedika-widget:hover {
+  box-shadow: var(--vk-shadow-hover);
+}
+
+.vedika-widget * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================================
+   HEADER
+   ========================================================================= */
+
+.vk-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--vk-border);
+}
+
+.vk-header__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vk-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.vk-header__icon {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.vk-header__badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--vk-primary);
+  background: var(--vk-primary-light);
+  padding: 2px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* =========================================================================
+   SIGN SELECTOR
+   ========================================================================= */
+
+.vk-sign-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.vk-sign-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 6px;
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius-sm);
+  background: var(--vk-bg);
+  color: var(--vk-text-secondary);
+  cursor: pointer;
+  font-size: 10px;
+  font-family: var(--vk-font);
+  transition: all var(--vk-transition);
+  min-width: 52px;
+  text-transform: capitalize;
+}
+
+.vk-sign-btn:hover {
+  border-color: var(--vk-primary);
+  color: var(--vk-primary);
+  background: var(--vk-primary-light);
+}
+
+.vk-sign-btn.active {
+  border-color: var(--vk-primary);
+  background: var(--vk-primary);
+  color: #fff;
+}
+
+.vk-sign-btn__symbol {
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* =========================================================================
+   CONTENT SECTIONS
+   ========================================================================= */
+
+.vk-prediction {
+  font-size: 14px;
+  color: var(--vk-text);
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.vk-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.vk-category {
+  background: var(--vk-bg-secondary);
+  border-radius: var(--vk-radius-sm);
+  padding: 12px;
+  transition: background var(--vk-transition);
+}
+
+.vk-category:hover {
+  background: var(--vk-bg-accent);
+}
+
+.vk-category__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--vk-text-muted);
+  margin-bottom: 4px;
+}
+
+.vk-category__text {
+  font-size: 12px;
+  color: var(--vk-text-secondary);
+  line-height: 1.5;
+}
+
+.vk-category__score {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--vk-primary);
+}
+
+/* =========================================================================
+   LUCKY ITEMS ROW
+   ========================================================================= */
+
+.vk-lucky-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.vk-lucky-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--vk-text-secondary);
+  background: var(--vk-bg-secondary);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+.vk-lucky-item__label {
+  font-weight: 600;
+  color: var(--vk-text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* =========================================================================
+   TAROT CARD
+   ========================================================================= */
+
+.vk-tarot-card {
+  text-align: center;
+  padding: 24px 16px;
+  background: linear-gradient(135deg, var(--vk-accent-light), var(--vk-bg-secondary));
+  border-radius: var(--vk-radius);
+  margin-bottom: 16px;
+}
+
+.vk-tarot-card__symbol {
+  font-size: 48px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.vk-tarot-card__name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--vk-accent);
+  margin-bottom: 4px;
+}
+
+.vk-tarot-card__arcana {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--vk-text-muted);
+  margin-bottom: 12px;
+}
+
+.vk-tarot-card__meaning {
+  font-size: 14px;
+  color: var(--vk-text-secondary);
+  line-height: 1.6;
+}
+
+.vk-tarot-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.vk-tarot-keyword {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--vk-accent-light);
+  color: var(--vk-accent);
+  border: 1px solid var(--vk-accent);
+}
+
+.vk-tarot-affirmation {
+  font-style: italic;
+  font-size: 13px;
+  color: var(--vk-text-secondary);
+  text-align: center;
+  padding: 12px;
+  background: var(--vk-bg-accent);
+  border-radius: var(--vk-radius-sm);
+  margin-top: 12px;
+  border-left: 3px solid var(--vk-accent);
+}
+
+/* =========================================================================
+   PANCHANG
+   ========================================================================= */
+
+.vk-panchang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.vk-panchang-item {
+  background: var(--vk-bg-secondary);
+  border-radius: var(--vk-radius-sm);
+  padding: 12px;
+}
+
+.vk-panchang-item__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--vk-text-muted);
+  margin-bottom: 4px;
+}
+
+.vk-panchang-item__value {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--vk-text);
+}
+
+.vk-panchang-item__detail {
+  font-size: 11px;
+  color: var(--vk-text-secondary);
+  margin-top: 2px;
+}
+
+.vk-panchang-item--full {
+  grid-column: 1 / -1;
+}
+
+/* =========================================================================
+   COMPATIBILITY
+   ========================================================================= */
+
+.vk-compat-score {
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.vk-compat-score__value {
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--vk-primary);
+  line-height: 1;
+}
+
+.vk-compat-score__label {
+  font-size: 13px;
+  color: var(--vk-text-secondary);
+  margin-top: 4px;
+}
+
+.vk-compat-signs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.vk-compat-sign {
+  text-align: center;
+}
+
+.vk-compat-sign__symbol {
+  font-size: 36px;
+  display: block;
+}
+
+.vk-compat-sign__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vk-text);
+  text-transform: capitalize;
+  margin-top: 4px;
+}
+
+.vk-compat-heart {
+  font-size: 24px;
+  color: var(--vk-danger);
+}
+
+.vk-compat-details {
+  list-style: none;
+  padding: 0;
+}
+
+.vk-compat-details li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--vk-border);
+  font-size: 13px;
+}
+
+.vk-compat-details li:last-child {
+  border-bottom: none;
+}
+
+.vk-compat-details__name {
+  color: var(--vk-text);
+}
+
+.vk-compat-details__bar {
+  width: 80px;
+  height: 6px;
+  background: var(--vk-bg-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.vk-compat-details__fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--vk-primary);
+  transition: width 0.5s ease;
+}
+
+/* =========================================================================
+   GEMSTONE RECOMMENDATION (compatibility widget also used for gemstone)
+   ========================================================================= */
+
+.vk-gemstone {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.vk-gemstone__icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.vk-gemstone__name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--vk-primary);
+}
+
+.vk-gemstone__planet {
+  font-size: 12px;
+  color: var(--vk-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vk-gemstone-properties {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.vk-gemstone-prop {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background: var(--vk-primary-light);
+  color: var(--vk-primary-dark);
+}
+
+.vk-gemstone-healing {
+  text-align: left;
+  margin-top: 12px;
+}
+
+.vk-gemstone-healing__section {
+  margin-bottom: 8px;
+}
+
+.vk-gemstone-healing__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--vk-text-muted);
+}
+
+.vk-gemstone-healing__text {
+  font-size: 13px;
+  color: var(--vk-text-secondary);
+  line-height: 1.5;
+}
+
+/* =========================================================================
+   LOADING & ERROR STATES
+   ========================================================================= */
+
+.vk-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  color: var(--vk-text-muted);
+}
+
+.vk-loading__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--vk-border);
+  border-top-color: var(--vk-primary);
+  border-radius: 50%;
+  animation: vk-spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+
+@keyframes vk-spin {
+  to { transform: rotate(360deg); }
+}
+
+.vk-loading__text {
+  font-size: 13px;
+}
+
+.vk-error {
+  text-align: center;
+  padding: 24px;
+  color: var(--vk-danger);
+}
+
+.vk-error__icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.vk-error__text {
+  font-size: 13px;
+}
+
+.vk-error__retry {
+  margin-top: 12px;
+  padding: 8px 20px;
+  border: 1px solid var(--vk-danger);
+  border-radius: var(--vk-radius-sm);
+  background: transparent;
+  color: var(--vk-danger);
+  cursor: pointer;
+  font-family: var(--vk-font);
+  font-size: 13px;
+  transition: all var(--vk-transition);
+}
+
+.vk-error__retry:hover {
+  background: var(--vk-danger);
+  color: #fff;
+}
+
+/* =========================================================================
+   FOOTER
+   ========================================================================= */
+
+.vk-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--vk-border);
+  margin-top: 16px;
+}
+
+.vk-footer__brand {
+  font-size: 11px;
+  color: var(--vk-text-muted);
+}
+
+.vk-footer__brand a {
+  color: var(--vk-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.vk-footer__brand a:hover {
+  text-decoration: underline;
+}
+
+.vk-footer__date {
+  font-size: 11px;
+  color: var(--vk-text-muted);
+}
+
+/* =========================================================================
+   INPUT CONTROLS (compatibility widget)
+   ========================================================================= */
+
+.vk-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.vk-select {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius-sm);
+  background: var(--vk-bg);
+  color: var(--vk-text);
+  font-family: var(--vk-font);
+  font-size: 14px;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236c757d'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.vk-select:focus {
+  outline: none;
+  border-color: var(--vk-primary);
+  box-shadow: 0 0 0 3px var(--vk-primary-light);
+}
+
+.vk-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--vk-radius-sm);
+  background: var(--vk-primary);
+  color: #fff;
+  font-family: var(--vk-font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--vk-transition);
+}
+
+.vk-btn:hover {
+  background: var(--vk-primary-dark);
+}
+
+.vk-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   RESPONSIVE
+   ========================================================================= */
+
+@media (max-width: 480px) {
+  .vedika-widget {
+    padding: 16px;
+    border-radius: var(--vk-radius-sm);
+  }
+
+  .vk-categories,
+  .vk-panchang-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .vk-sign-selector {
+    gap: 4px;
+  }
+
+  .vk-sign-btn {
+    min-width: 44px;
+    padding: 6px 4px;
+    font-size: 9px;
+  }
+
+  .vk-sign-btn__symbol {
+    font-size: 14px;
+  }
+}

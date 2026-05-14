@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vedika AI Widgets — Demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+      padding: 40px 20px;
+    }
+    .demo-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .demo-header h1 {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .demo-header p {
+      font-size: 15px;
+      color: #6c757d;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .demo-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .demo-section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #6c757d;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .demo-code {
+      background: #1a1a2e;
+      color: #e8e8e8;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: 'Fira Code', 'Consolas', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      white-space: pre;
+      line-height: 1.5;
+    }
+    .demo-toggle {
+      text-align: center;
+      margin: 32px 0;
+    }
+    .demo-toggle button {
+      padding: 10px 24px;
+      border: 2px solid #e67e22;
+      border-radius: 24px;
+      background: transparent;
+      color: #e67e22;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0 8px;
+      transition: 0.2s;
+    }
+    .demo-toggle button:hover,
+    .demo-toggle button.active {
+      background: #e67e22;
+      color: #fff;
+    }
+    @media (max-width: 480px) {
+      .demo-grid { grid-template-columns: 1fr; }
+      body { padding: 20px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-header">
+    <h1>Vedika AI Widgets</h1>
+    <p>Embeddable astrology widgets powered by the Vedika Intelligence API. Works with Wix, Shopify, WordPress, or any HTML page.</p>
+  </div>
+
+  <!-- Theme toggle -->
+  <div class="demo-toggle">
+    <button class="active" onclick="setTheme('light')">Light Theme</button>
+    <button onclick="setTheme('dark')">Dark Theme</button>
+  </div>
+
+  <div class="demo-grid">
+
+    <!-- Horoscope -->
+    <div class="demo-section">
+      <h2>Daily Horoscope</h2>
+      <div class="vedika-widget" data-type="horoscope" data-sign="aries" data-period="daily" data-theme="light"></div>
+      <div class="demo-code">&lt;div class="vedika-widget"
+     data-type="horoscope"
+     data-sign="aries"
+     data-period="daily"
+     data-theme="light"&gt;&lt;/div&gt;
+&lt;script src="vedika-widget.js"&gt;&lt;/script&gt;</div>
+    </div>
+
+    <!-- Tarot -->
+    <div class="demo-section">
+      <h2>Card of the Day</h2>
+      <div class="vedika-widget" data-type="tarot" data-theme="light"></div>
+      <div class="demo-code">&lt;div class="vedika-widget"
+     data-type="tarot"
+     data-theme="light"&gt;&lt;/div&gt;
+&lt;script src="vedika-widget.js"&gt;&lt;/script&gt;</div>
+    </div>
+
+    <!-- Panchang -->
+    <div class="demo-section">
+      <h2>Today's Panchang</h2>
+      <div class="vedika-widget" data-type="panchang" data-theme="light"></div>
+      <div class="demo-code">&lt;div class="vedika-widget"
+     data-type="panchang"
+     data-theme="light"
+     data-lang="en"&gt;&lt;/div&gt;
+&lt;script src="vedika-widget.js"&gt;&lt;/script&gt;</div>
+    </div>
+
+    <!-- Compatibility -->
+    <div class="demo-section">
+      <h2>Compatibility Checker</h2>
+      <div class="vedika-widget" data-type="compatibility" data-sign="aries" data-sign2="leo" data-theme="light"></div>
+      <div class="demo-code">&lt;div class="vedika-widget"
+     data-type="compatibility"
+     data-sign="aries"
+     data-sign2="leo"
+     data-theme="light"&gt;&lt;/div&gt;
+&lt;script src="vedika-widget.js"&gt;&lt;/script&gt;</div>
+    </div>
+
+  </div>
+
+  <!-- Load the main widget script (handles all types) -->
+  <script src="vedika-widget.js"></script>
+
+  <script>
+    function setTheme(theme) {
+      var widgets = document.querySelectorAll('.vedika-widget');
+      for (var i = 0; i < widgets.length; i++) {
+        widgets[i].setAttribute('data-theme', theme);
+      }
+      var btns = document.querySelectorAll('.demo-toggle button');
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.toggle('active', btns[j].textContent.toLowerCase().indexOf(theme) !== -1);
+      }
+      if (theme === 'dark') {
+        document.body.style.background = '#0d1117';
+        document.body.style.color = '#e8e8e8';
+      } else {
+        document.body.style.background = '#f0f2f5';
+        document.body.style.color = '#1a1a2e';
+      }
+    }
+  </script>
+
+</body>
+</html>
