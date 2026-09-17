@@ -13,7 +13,9 @@
  *   data-sign     — zodiac sign (for horoscope/compatibility)
  *   data-theme    — "light" | "dark"
  *   data-lang     — language code ("en", "hi", "ta", etc.)
- *   data-api-key  — production API key (omit for sandbox)
+ *   data-proxy-base — your Velo backend URL, e.g. https://www.your-site.com/_functions/vedika
+ *                   (holds the API key server-side; omit only for the keyless sandbox demo)
+ *   data-api-key  — IGNORED since 2026-09-17: never put a key in page markup
  *   data-period   — "daily" | "weekly" | "monthly" (horoscope only)
  *
  * Security: All dynamic text is inserted via textContent or the escapeHtml
@@ -30,6 +32,7 @@
   // =========================================================================
 
   var SANDBOX_BASE = 'https://api.vedika.io/sandbox';
+  // Retired 2026-09-17: the browser no longer calls the keyed API. The Velo backend maps routes to /v2 server-side.
   var PROD_BASE = 'https://api.vedika.io/v2/astrology';
 
   var SIGNS = [
@@ -51,14 +54,26 @@
   // UTILITY — SAFE DOM BUILDERS
   // =========================================================================
 
-  function getBaseUrl(apiKey) {
-    return apiKey ? PROD_BASE : SANDBOX_BASE;
+  // No API key is ever read into a request (2026-09-17). A key in page markup
+  // is readable by every visitor, who could then spend the account balance.
+  // Requests go to data-proxy-base (your Velo backend, which adds the key
+  // server-side) or, without it, to Vedika's keyless sandbox, which answers
+  // browsers only on Vedika's own sites and localhost.
+  function getBaseUrl(proxyBase) {
+    return proxyBase ? String(proxyBase).replace(/\/+$/, '') : SANDBOX_BASE;
   }
 
-  function buildHeaders(apiKey) {
-    var h = { 'Accept': 'application/json' };
-    if (apiKey) h['X-API-Key'] = apiKey;
-    return h;
+  function buildHeaders() {
+    return { 'Accept': 'application/json' };
+  }
+
+  var keyWarned = false;
+  function warnIgnoredKey(elem) {
+    if (!elem.getAttribute('data-api-key') || keyWarned) return;
+    keyWarned = true;
+    if (typeof console !== 'undefined' && console.warn) {
+      console.warn('[vedika] data-api-key is ignored and was not sent. Remove it: a key in page markup is readable by every visitor. Set data-proxy-base to your Velo backend instead.');
+    }
   }
 
   function getSignInfo(signId) {
@@ -127,10 +142,10 @@
     return footer;
   }
 
-  function apiFetch(url, apiKey, lang) {
+  function apiFetch(url, lang) {
     var sep = url.indexOf('?') === -1 ? '?' : '&';
     if (lang && lang !== 'en') url += sep + 'lang=' + encodeURIComponent(lang);
-    return fetch(url, { headers: buildHeaders(apiKey) })
+    return fetch(url, { headers: buildHeaders() })
       .then(function (r) {
         if (!r.ok) throw new Error('API returned ' + r.status);
         return r.json();
@@ -169,9 +184,8 @@
   function renderHoroscope(container, opts) {
     var sign = opts.sign || 'aries';
     var period = opts.period || 'daily';
-    var apiKey = opts.apiKey;
     var lang = opts.lang;
-    var base = getBaseUrl(apiKey);
+    var base = getBaseUrl(opts.proxyBase);
 
     function load(s) {
       sign = s;
@@ -181,7 +195,7 @@
         ? '/horoscope/' + sign
         : '/horoscope/' + sign + '/' + period;
 
-      apiFetch(base + path, apiKey, lang)
+      apiFetch(base + path, lang)
         .then(function (data) { render(data); })
         .catch(function (err) { showError(container, err.message, function () { load(sign); }); });
     }
@@ -250,13 +264,12 @@
   // =========================================================================
 
   function renderTarot(container, opts) {
-    var apiKey = opts.apiKey;
     var lang = opts.lang;
-    var base = getBaseUrl(apiKey);
+    var base = getBaseUrl(opts.proxyBase);
 
     function load() {
       showLoading(container);
-      apiFetch(base + '/tarot/card-of-the-day', apiKey, lang)
+      apiFetch(base + '/tarot/card-of-the-day', lang)
         .then(function (data) { render(data); })
         .catch(function (err) { showError(container, err.message, load); });
     }
@@ -307,13 +320,12 @@
   // =========================================================================
 
   function renderPanchang(container, opts) {
-    var apiKey = opts.apiKey;
     var lang = opts.lang;
-    var base = getBaseUrl(apiKey);
+    var base = getBaseUrl(opts.proxyBase);
 
     function load() {
       showLoading(container);
-      apiFetch(base + '/panchang/today?include=sunrise,festivals', apiKey, lang)
+      apiFetch(base + '/panchang/today?include=sunrise,festivals', lang)
         .then(function (data) { render(data); })
         .catch(function (err) { showError(container, err.message, load); });
     }
@@ -395,9 +407,8 @@
   function renderCompatibility(container, opts) {
     var sign1 = opts.sign || 'aries';
     var sign2 = opts.sign2 || 'leo';
-    var apiKey = opts.apiKey;
     var lang = opts.lang;
-    var base = getBaseUrl(apiKey);
+    var base = getBaseUrl(opts.proxyBase);
 
     function load() {
       var resultDiv = container.querySelector('#vk-compat-result');
@@ -407,7 +418,7 @@
         ldiv.appendChild(el('div', 'vk-loading__spinner'));
         resultDiv.appendChild(ldiv);
       }
-      apiFetch(base + '/astrology/ashtakoota', apiKey, lang)
+      apiFetch(base + '/astrology/ashtakoota', lang)
         .then(function (data) { renderResult(data); })
         .catch(function (err) {
           if (resultDiv) {
@@ -535,6 +546,7 @@
   };
 
   function initWidget(elem) {
+    warnIgnoredKey(elem);
     var type = (elem.getAttribute('data-type') || 'horoscope').toLowerCase();
     var theme = elem.getAttribute('data-theme') || 'light';
     elem.setAttribute('data-theme', theme);
@@ -543,7 +555,7 @@
       sign: (elem.getAttribute('data-sign') || 'aries').toLowerCase(),
       sign2: (elem.getAttribute('data-sign2') || 'leo').toLowerCase(),
       period: (elem.getAttribute('data-period') || 'daily').toLowerCase(),
-      apiKey: elem.getAttribute('data-api-key') || '',
+      proxyBase: elem.getAttribute('data-proxy-base') || '',
       lang: elem.getAttribute('data-lang') || 'en',
       theme: theme
     };

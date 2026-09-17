@@ -15,7 +15,27 @@
   'use strict';
 
   var SANDBOX = 'https://api.vedika.io/sandbox';
+  // Retired 2026-09-17: the browser no longer calls the keyed API. The Velo backend maps routes to /v2 server-side.
   var PROD = 'https://api.vedika.io/v2/astrology';
+
+  // No API key is ever read into a request (2026-09-17). A key in page markup
+  // is readable by every visitor, who could then spend the account balance.
+  // Set data-proxy-base to your Velo backend (velo/backend/http-functions.js,
+  // e.g. https://www.your-site.com/_functions/vedika), which adds the key
+  // server-side. Without it the widget uses Vedika's keyless sandbox, which
+  // answers browsers only on Vedika's own sites and localhost. A leftover
+  // data-api-key attribute is ignored with one console warning.
+  var keyWarned = false;
+  function proxyBase(container) {
+    if (container.getAttribute('data-api-key') && !keyWarned) {
+      keyWarned = true;
+      if (typeof console !== 'undefined' && console.warn) {
+        console.warn('[vedika] data-api-key is ignored and was not sent. Remove it: a key in page markup is readable by every visitor. Set data-proxy-base to your Velo backend instead.');
+      }
+    }
+    var base = container.getAttribute('data-proxy-base');
+    return base ? String(base).replace(/\/+$/, '') : SANDBOX;
+  }
 
   var SIGNS = [
     { id: 'aries',       symbol: '♈', name: 'Aries' },
@@ -79,11 +99,10 @@
   function init(container) {
     var sign = (container.getAttribute('data-sign') || 'aries').toLowerCase();
     var period = (container.getAttribute('data-period') || 'daily').toLowerCase();
-    var apiKey = container.getAttribute('data-api-key') || '';
     var lang = container.getAttribute('data-lang') || 'en';
     var theme = container.getAttribute('data-theme') || 'light';
     container.setAttribute('data-theme', theme);
-    var base = apiKey ? PROD : SANDBOX;
+    var base = proxyBase(container);
 
     function load(s) {
       sign = s;
@@ -92,7 +111,6 @@
       var url = base + path;
       if (lang && lang !== 'en') url += '?lang=' + encodeURIComponent(lang);
       var headers = { 'Accept': 'application/json' };
-      if (apiKey) headers['X-API-Key'] = apiKey;
 
       fetch(url, { headers: headers })
         .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
